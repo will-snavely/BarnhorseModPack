@@ -27,4 +27,9 @@ public class PatchEventManager {
     public static void dispatchCardObtained(AbstractCard card) {
         subscribers.forEach(sub -> sub.onCardObtained(card));
     }
+
+    public static void dispatchCardRemoved(AbstractCard card) {
+        subscribers.forEach(sub -> sub.onCardRemoved(card));
+    }
+
 }

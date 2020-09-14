@@ -5,6 +5,8 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.events.exordium.Cleric;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +26,7 @@ public class Horstery implements
 
     public Horstery() {
         handler = new EventPublishingHandler();
+        Cleric e;
     }
 
     public static void initialize() {
@@ -65,4 +68,8 @@ public class Horstery implements
         handler.cardObtained(card);
     }
 
+    @Override
+    public void onCardRemoved(AbstractCard card) {
+        // Stub
+    }
 }

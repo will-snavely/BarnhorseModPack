@@ -17,4 +17,5 @@ public interface GameEventHandler {
     void cardObtained(AbstractCard card);
 
     void cardRemovedFromDeck(AbstractCard card);
+
 }

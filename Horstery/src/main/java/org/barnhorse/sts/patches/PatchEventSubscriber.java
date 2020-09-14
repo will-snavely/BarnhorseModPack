@@ -9,4 +9,6 @@ public interface PatchEventSubscriber {
     void onGameActionDone(AbstractGameAction action);
 
     void onCardObtained(AbstractCard card);
+
+    void onCardRemoved(AbstractCard card);
 }
