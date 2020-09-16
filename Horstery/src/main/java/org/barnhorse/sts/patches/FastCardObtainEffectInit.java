@@ -18,7 +18,7 @@ public class FastCardObtainEffectInit {
     public static void Insert(
             Object obj,
             AbstractCard card) {
-        System.out.println("here: " + card);
+        PatchEventManager.dispatchCardObtained(card);
     }
 
     private static class MyLocator extends SpireInsertLocator {
