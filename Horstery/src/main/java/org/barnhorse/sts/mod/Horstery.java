@@ -2,6 +2,7 @@ package org.barnhorse.sts.mod;
 
 import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -16,6 +17,7 @@ import org.barnhorse.sts.lib.events.CardUsed;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
+import sun.security.krb5.Config;
 
 import java.io.*;
 
@@ -28,7 +30,13 @@ public class Horstery implements
 
     private EventPublisher eventPublisher;
 
-    private static final String eventLog = "saves" + File.separator + "testLog";
+    private static final String configPath = "mods" + File.separator
+            + "config" + File.separator
+            + "barnhorse" + File.separator
+            + "horstery" + File.separator
+            + "config.json";
+
+    private static Configuration config;
 
     public Horstery(Writer eventWriter) {
         this.eventPublisher = new EventPublisher(eventWriter);
@@ -36,8 +44,19 @@ public class Horstery implements
     }
 
     public static void initialize() {
+        config = new Configuration();
+
+        File configFile = new File(configPath);
+        if (configFile.exists()) {
+            try {
+                Gson gson = new Gson();
+                config = gson.fromJson(new FileReader(configFile), Configuration.class);
+            } catch (IOException ioe) {
+                logger.error("Failed to load configuration file at: " + configPath);
+            }
+        }
         try {
-            Writer eventWriter = new BufferedWriter(new FileWriter(eventLog));
+            Writer eventWriter = new BufferedWriter(new FileWriter(config.getEventLogPath()));
             Horstery mod = new Horstery(eventWriter);
             BaseMod.subscribe(mod);
             PatchEventManager.subscribe(mod);
