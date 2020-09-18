@@ -6,6 +6,8 @@ import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.GameActionManager;
 import javassist.CannotCompileException;
 import javassist.CtBehavior;
+import org.barnhorse.sts.patches.dispatch.PatchEventManager;
+import org.barnhorse.sts.patches.util.PatchUtil;
 
 @SpirePatch(
         cls = "com.megacrit.cardcrawl.actions.GameActionManager",
@@ -29,10 +31,8 @@ public class GameActionManagerUpdate {
     }
 
     private static class MyLocator extends SpireInsertLocator {
-        public int[] Locate(CtBehavior ctMethodToPatch) throws CannotCompileException, PatchingException {
-            return new int[]{
-                    ctMethodToPatch.getMethodInfo().getLineNumber(0)
-            };
+        public int[] Locate(CtBehavior ctMethodToPatch) {
+            return PatchUtil.topOfMethod(ctMethodToPatch);
         }
     }
 }
