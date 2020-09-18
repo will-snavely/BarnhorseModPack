@@ -4,16 +4,18 @@ import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.DiscardAtEndOfTurnAction;
+import com.megacrit.cardcrawl.actions.common.EnableEndTurnButtonAction;
 import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.monsters.MonsterGroup;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.EventPublisher;
-import org.barnhorse.sts.lib.events.CardAddedToDeck;
-import org.barnhorse.sts.lib.events.CardRemovedFromDeck;
-import org.barnhorse.sts.lib.events.CardUsed;
+import org.barnhorse.sts.lib.events.*;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
@@ -25,6 +27,7 @@ import java.io.*;
 public class Horstery implements
         basemod.interfaces.OnStartBattleSubscriber,
         basemod.interfaces.PostBattleSubscriber,
+        basemod.interfaces.RelicGetSubscriber,
         PatchEventSubscriber {
     public static final Logger logger = LogManager.getLogger(Horstery.class.getName());
 
@@ -62,16 +65,21 @@ public class Horstery implements
             PatchEventManager.subscribe(mod);
         } catch (IOException e) {
             e.printStackTrace();
+            AbstractCard c;
         }
     }
 
     @Override
-    public void receiveOnBattleStart(AbstractRoom abstractRoom) {
+    public void receiveOnBattleStart(AbstractRoom room) {
+        eventPublisher.publishEvent(new BattleStart(room));
     }
 
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
     }
+
+    // EndOfTurnAction
+    // EnableEndTurnButtonAction
 
     @Override
     public void onGameActionStart(AbstractGameAction action) {
@@ -92,6 +100,7 @@ public class Horstery implements
 
     @Override
     public void onGameActionDone(AbstractGameAction action) {
+
     }
 
     @Override
@@ -102,5 +111,10 @@ public class Horstery implements
     @Override
     public void onCardRemoved(CardGroup deck, AbstractCard card) {
         eventPublisher.publishEvent(new CardRemovedFromDeck(card));
+    }
+
+    @Override
+    public void receiveRelicGet(AbstractRelic abstractRelic) {
+        eventPublisher.publishEvent(new RelicAdded(abstractRelic));
     }
 }

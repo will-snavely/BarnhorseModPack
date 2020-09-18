@@ -6,6 +6,7 @@ import org.barnhorse.sts.lib.util.ReflectionHelper;
 public class Card {
     public String cardName;
     public String uuid;
+    public String type;
 
     public int baseDamage;
     public int baseBlock;
@@ -29,9 +30,9 @@ public class Card {
     public boolean upgraded;
 
     public Card(AbstractCard card) {
-
         this.cardName = card.name;
         this.uuid = card.uuid.toString();
+        this.type = card.type.name();
 
         this.baseDamage = card.baseDamage;
         this.baseBlock = card.baseBlock;
