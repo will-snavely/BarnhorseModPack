@@ -1,4 +1,4 @@
-package org.barnhorse.sts.lib.events.model;
+package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
@@ -17,6 +17,7 @@ public class Card {
     public int cost;
     public int costForTurn;
     public int damage;
+    public int magicNumber;
 
     // It's a little annoying to use a List<Integer> here, since
     // converting from a primitive array to a List of boxed values
@@ -44,6 +45,7 @@ public class Card {
         this.costForTurn = card.costForTurn;
         this.damage = card.damage;
         this.multiDamage = card.multiDamage;
+        this.magicNumber = card.magicNumber;
 
         this.upgraded = card.upgraded;
         this.exhaust = card.exhaust;

@@ -1,4 +1,4 @@
-package org.barnhorse.sts.lib.events.model;
+package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.core.AbstractCreature;
 

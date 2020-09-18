@@ -4,12 +4,11 @@ import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.DiscardAtEndOfTurnAction;
 import com.megacrit.cardcrawl.actions.common.EnableEndTurnButtonAction;
 import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
-import com.megacrit.cardcrawl.monsters.MonsterGroup;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,6 @@ import org.barnhorse.sts.lib.events.*;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
-import sun.security.krb5.Config;
 
 import java.io.*;
 
@@ -28,6 +26,7 @@ public class Horstery implements
         basemod.interfaces.OnStartBattleSubscriber,
         basemod.interfaces.PostBattleSubscriber,
         basemod.interfaces.RelicGetSubscriber,
+        basemod.interfaces.PostDrawSubscriber,
         PatchEventSubscriber {
     public static final Logger logger = LogManager.getLogger(Horstery.class.getName());
 
@@ -78,28 +77,32 @@ public class Horstery implements
     public void receivePostBattle(AbstractRoom abstractRoom) {
     }
 
-    // EndOfTurnAction
-    // EnableEndTurnButtonAction
-
     @Override
     public void onGameActionStart(AbstractGameAction action) {
-        if (action != null) {
-            logger.info("Game action started: " + action.getClass().getName());
-            if (action instanceof UseCardAction) {
-                UseCardAction useCardAction = (UseCardAction) action;
-                AbstractCard card = ReflectionHelper
-                        .<AbstractCard>tryGetFieldValue(useCardAction, "targetCard", true)
-                        .orElse(null);
-                if (card == null) {
-                    logger.warn("Failed to determine which card was played.");
-                }
-                eventPublisher.publishEvent(new CardUsed(card, useCardAction.target));
+        if (action == null) {
+            return;
+        }
+
+        if (action instanceof UseCardAction) {
+            UseCardAction useCardAction = (UseCardAction) action;
+            AbstractCard card = ReflectionHelper
+                    .<AbstractCard>tryGetFieldValue(useCardAction, "targetCard", true)
+                    .orElse(null);
+            if (card == null) {
+                logger.warn("Failed to determine which card was played.");
             }
+            eventPublisher.publishEvent(new CardUsed(card, useCardAction.target));
         }
     }
 
     @Override
     public void onGameActionDone(AbstractGameAction action) {
+        if (action == null) {
+            return;
+        }
+        if (action instanceof EnableEndTurnButtonAction) {
+            eventPublisher.publishEvent(new PlayerTurnStart(AbstractDungeon.player));
+        }
 
     }
 
@@ -116,5 +119,10 @@ public class Horstery implements
     @Override
     public void receiveRelicGet(AbstractRelic abstractRelic) {
         eventPublisher.publishEvent(new RelicAdded(abstractRelic));
+    }
+
+    @Override
+    public void receivePostDraw(AbstractCard abstractCard) {
+        eventPublisher.publishEvent(new CardDraw(abstractCard));
     }
 }

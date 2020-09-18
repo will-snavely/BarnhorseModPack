@@ -1,4 +1,4 @@
-package org.barnhorse.sts.patches;
+package org.barnhorse.sts.patches.cardgroup;
 
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertLocator;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertPatch;
@@ -11,10 +11,10 @@ import org.barnhorse.sts.patches.util.PatchUtil;
 
 @SpirePatch(
         cls = "com.megacrit.cardcrawl.cards.CardGroup",
-        method = "addToBottom",
+        method = "addToTop",
         paramtypez = {AbstractCard.class}
 )
-public class CardGroupAddToBottom {
+public class AddToTop {
     @SpireInsertPatch(locator = MyLocator.class)
     public static void Insert(
             CardGroup thisRef,

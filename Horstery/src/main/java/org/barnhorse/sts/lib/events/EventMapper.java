@@ -24,8 +24,10 @@ public class EventMapper {
 
     static {
         eventMap = new HashMap<>();
-        register(CardUsed.key, CardUsed.class);
-        register(CardRemovedFromDeck.key, CardRemovedFromDeck.class);
+        register(BattleStart.key, BattleStart.class);
         register(CardAddedToDeck.key, CardAddedToDeck.class);
+        register(CardDraw.key, CardDraw.class);
+        register(CardRemovedFromDeck.key, CardRemovedFromDeck.class);
+        register(CardUsed.key, CardUsed.class);
     }
 }

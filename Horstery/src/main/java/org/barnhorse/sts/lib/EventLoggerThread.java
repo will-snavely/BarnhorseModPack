@@ -13,10 +13,8 @@ public class EventLoggerThread implements Runnable {
 
     private final BlockingQueue<GameEvent> eventQueue;
     private final PrintWriter logWriter;
-    private String eventFilePath;
     private final Gson gson;
 
-    // Note: caller is responsible for cleaning up the Writer resource.
     public EventLoggerThread(BlockingQueue<GameEvent> eventQueue, Writer writer) {
         assert eventQueue != null;
 

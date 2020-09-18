@@ -2,11 +2,11 @@ package org.barnhorse.sts.lib.events;
 
 public abstract class GameEvent {
     public String key;
-    public String name;
+    public String desc;
     public long timestamp;
 
-    public GameEvent(String key, String name) {
+    public GameEvent(String key, String description) {
         this.key = key;
-        this.name = name;
+        this.desc = description;
     }
 }

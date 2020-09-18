@@ -1,4 +1,4 @@
-package org.barnhorse.sts.patches;
+package org.barnhorse.sts.patches.gameactionmanager;
 
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
@@ -13,7 +13,7 @@ import org.barnhorse.sts.patches.util.PatchUtil;
         cls = "com.megacrit.cardcrawl.actions.GameActionManager",
         method = "update"
 )
-public class GameActionManagerUpdate {
+public class Update {
     public static AbstractGameAction lastActionSeen = null;
 
     @SpireInsertPatch(locator = MyLocator.class)

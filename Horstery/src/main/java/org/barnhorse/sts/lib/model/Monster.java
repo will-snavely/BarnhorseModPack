@@ -1,9 +1,8 @@
-package org.barnhorse.sts.lib.events.model;
+package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Monster extends Creature {
@@ -23,12 +22,26 @@ public class Monster extends Creature {
 
     public Monster(AbstractMonster monster) {
         super(monster);
-        this.moveSet = (Map<Integer, String>) ReflectionHelper
-                .tryGetFieldValue(monster, "moveSet", true)
+
+        this.moveSet = ReflectionHelper
+                .<Map<Integer, String>>tryGetFieldValue(monster, "moveSet", true)
                 .orElse(null);
+
         this.escaped = monster.escaped;
         this.escapeNext = monster.escapeNext;
-        this.type = monster.type.name();
         this.cannotEscape = monster.cannotEscape;
+        this.isMultiDmg = ReflectionHelper
+                .<Boolean>tryGetFieldValue(monster, "isMultiDmg", true)
+                .orElse(false);
+
+        this.intentDmg = monster.getIntentDmg();
+        this.intentBaseDmg = monster.getIntentBaseDmg();
+        this.intentMultiAmt = ReflectionHelper
+                .<Integer>tryGetFieldValue(monster, "intentMultiAmt", true)
+                .orElse(-1);
+
+        this.type = monster.type.name();
+        this.moveName = monster.moveName;
+        this.intent = monster.intent.name();
     }
 }

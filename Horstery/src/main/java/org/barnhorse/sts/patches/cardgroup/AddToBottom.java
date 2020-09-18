@@ -1,4 +1,4 @@
-package org.barnhorse.sts.patches;
+package org.barnhorse.sts.patches.cardgroup;
 
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertLocator;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertPatch;
@@ -11,16 +11,16 @@ import org.barnhorse.sts.patches.util.PatchUtil;
 
 @SpirePatch(
         cls = "com.megacrit.cardcrawl.cards.CardGroup",
-        method = "removeCard",
+        method = "addToBottom",
         paramtypez = {AbstractCard.class}
 )
-public class CardGroupRemoveCard {
+public class AddToBottom {
     @SpireInsertPatch(locator = MyLocator.class)
     public static void Insert(
             CardGroup thisRef,
             AbstractCard card) {
         if (thisRef.type == CardGroup.CardGroupType.MASTER_DECK) {
-            PatchEventManager.dispatchCardRemoved(thisRef, card);
+            PatchEventManager.dispatchCardObtained(thisRef, card);
         }
     }
 

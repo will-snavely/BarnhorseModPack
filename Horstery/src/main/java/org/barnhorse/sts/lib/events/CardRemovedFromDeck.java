@@ -1,7 +1,7 @@
 package org.barnhorse.sts.lib.events;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import org.barnhorse.sts.lib.events.model.Card;
+import org.barnhorse.sts.lib.model.Card;
 
 public class CardRemovedFromDeck extends GameEvent {
     public static String key = "card_removed";
@@ -9,7 +9,7 @@ public class CardRemovedFromDeck extends GameEvent {
     public Card card;
 
     public CardRemovedFromDeck(AbstractCard card) {
-        super(key, "Card Removed");
+        super(key, "Card removed from master deck");
         this.card = new Card(card);
     }
 }

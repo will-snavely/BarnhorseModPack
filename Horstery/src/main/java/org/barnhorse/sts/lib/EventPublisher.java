@@ -1,11 +1,5 @@
 package org.barnhorse.sts.lib;
 
-import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.CardGroup;
-import com.megacrit.cardcrawl.core.AbstractCreature;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
-import org.barnhorse.sts.lib.events.CardRemovedFromDeck;
-import org.barnhorse.sts.lib.events.CardUsed;
 import org.barnhorse.sts.lib.events.GameEvent;
 
 import java.io.Writer;
