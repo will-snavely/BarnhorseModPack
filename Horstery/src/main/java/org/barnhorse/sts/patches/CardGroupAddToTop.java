@@ -11,16 +11,16 @@ import org.barnhorse.sts.patches.util.PatchUtil;
 
 @SpirePatch(
         cls = "com.megacrit.cardcrawl.cards.CardGroup",
-        method = "removeCard",
+        method = "addToTop",
         paramtypez = {AbstractCard.class}
 )
-public class CardGroupRemoveCard {
+public class CardGroupAddToTop {
     @SpireInsertPatch(locator = MyLocator.class)
     public static void Insert(
             CardGroup thisRef,
             AbstractCard card) {
         if (thisRef.type == CardGroup.CardGroupType.MASTER_DECK) {
-            PatchEventManager.dispatchCardRemoved(thisRef, card);
+            PatchEventManager.dispatchCardObtained(thisRef, card);
         }
     }
 

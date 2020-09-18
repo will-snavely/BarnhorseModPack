@@ -3,6 +3,7 @@ package org.barnhorse.sts.lib;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.barnhorse.sts.lib.events.GameEvent;
 
 import java.io.*;
 import java.util.concurrent.BlockingQueue;
