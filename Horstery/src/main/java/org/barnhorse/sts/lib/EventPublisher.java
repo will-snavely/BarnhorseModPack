@@ -1,20 +1,21 @@
 package org.barnhorse.sts.lib;
 
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import org.barnhorse.sts.lib.consumer.EventConsumer;
 import org.barnhorse.sts.lib.events.GameEvent;
 
-import java.io.Writer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class EventPublisher {
     private Thread loggerThread;
     private BlockingQueue<GameEvent> eventQueue;
-    private Writer eventWriter;
+    private EventConsumer consumer;
 
-    public EventPublisher(Writer writer) {
-        assert writer != null;
+    public EventPublisher(EventConsumer consumer) {
+        assert consumer != null;
         this.eventQueue = new LinkedBlockingDeque<>();
-        this.eventWriter = writer;
+        this.consumer = consumer;
     }
 
     public void start() {
@@ -24,16 +25,25 @@ public class EventPublisher {
     }
 
     private void spawnLoggerThread() {
-        this.loggerThread = new Thread(new EventLoggerThread(eventQueue, eventWriter));
+        this.loggerThread = new Thread(new EventLoggerThread(eventQueue, consumer));
         this.loggerThread.start();
     }
 
     public void publishEvent(GameEvent event) {
         try {
-            event.timestamp = System.currentTimeMillis();
             this.eventQueue.put(event);
         } catch (InterruptedException e) {
             // TODO: Figure out what to do with this exception
+            e.printStackTrace();
+        }
+    }
+
+    public void stop() {
+        try {
+            this.loggerThread.interrupt();
+            this.loggerThread.join();
+            this.consumer.tearDown();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

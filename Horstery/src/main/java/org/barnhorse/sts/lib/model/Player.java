@@ -32,6 +32,9 @@ public class Player {
     public int maxOrbs;
     public Stance stance;
 
+    public Player() {
+    }
+
     public Player(AbstractPlayer player) {
         this.chosenClass = player.chosenClass.name();
         this.gameHandSize = player.gameHandSize;

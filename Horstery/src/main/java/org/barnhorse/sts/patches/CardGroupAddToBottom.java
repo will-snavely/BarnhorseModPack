@@ -1,4 +1,4 @@
-package org.barnhorse.sts.patches.cardgroup;
+package org.barnhorse.sts.patches;
 
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertLocator;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInsertPatch;
@@ -7,6 +7,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import javassist.CtBehavior;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
+import org.barnhorse.sts.patches.util.FirstLineLocator;
 import org.barnhorse.sts.patches.util.PatchUtil;
 
 @SpirePatch(
@@ -14,19 +15,13 @@ import org.barnhorse.sts.patches.util.PatchUtil;
         method = "addToBottom",
         paramtypez = {AbstractCard.class}
 )
-public class AddToBottom {
-    @SpireInsertPatch(locator = MyLocator.class)
+public class CardGroupAddToBottom {
+    @SpireInsertPatch(locator = FirstLineLocator.class)
     public static void Insert(
             CardGroup thisRef,
             AbstractCard card) {
         if (thisRef.type == CardGroup.CardGroupType.MASTER_DECK) {
             PatchEventManager.dispatchCardObtained(thisRef, card);
-        }
-    }
-
-    private static class MyLocator extends SpireInsertLocator {
-        public int[] Locate(CtBehavior ctMethodToPatch) {
-            return PatchUtil.topOfMethod(ctMethodToPatch);
         }
     }
 }

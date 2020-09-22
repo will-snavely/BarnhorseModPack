@@ -9,6 +9,9 @@ public class Power {
     public int priority;
     public int amount;
 
+    public Power() {
+    }
+
     public Power(AbstractPower power) {
         this.name = power.name;
         this.ID = power.ID;

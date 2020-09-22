@@ -1,11 +1,19 @@
 package org.barnhorse.sts.lib.events;
 
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import org.barnhorse.sts.lib.model.Relic;
 
 public class RelicAdded extends GameEvent {
-    public static String key = "relic_added";
+    public final static String key = "relic_added";
+
+    public Relic relic;
+
+    public RelicAdded() {
+        super(key, "Obtained a new relic.");
+    }
 
     public RelicAdded(AbstractRelic relic) {
-        super(key, "Obtained a new relic.");
+        this();
+        this.relic = new Relic(relic);
     }
 }

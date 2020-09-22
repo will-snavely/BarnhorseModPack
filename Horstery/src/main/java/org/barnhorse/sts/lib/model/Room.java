@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 public class Room {
     public List<Monster> monsters;
 
+    public Room() {
+    }
+
     public Room(AbstractRoom room) {
         this.monsters = room.monsters.monsters
                 .stream()

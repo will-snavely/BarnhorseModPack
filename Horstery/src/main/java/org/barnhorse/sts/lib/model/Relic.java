@@ -15,6 +15,9 @@ public class Relic {
     public boolean energyBased;
     public boolean usedUp;
 
+    public Relic() {
+    }
+
     public Relic(AbstractRelic relic) {
         this.cost = relic.cost;
         this.name = relic.name;

@@ -1,25 +1,30 @@
 package org.barnhorse.sts.mod;
 
-import java.io.File;
+enum StorageEngine {
+    FILE,
+    NITRITE
+}
 
 public class Configuration {
-    private String eventLogPath;
-    private String eventLogArchivePath;
+    private String eventLogDirectory;
+    private StorageEngine storageEngine;
 
     public Configuration() {
     }
 
-    public String getEventLogPath() {
-        if (this.eventLogPath == null) {
-            return "saves" + File.separator + "eventLog";
-        }
-        return this.eventLogPath;
+    public String getEventLogDirectory() {
+        return this.eventLogDirectory;
     }
 
-    public String getEventLogArchivePath() {
-        if (this.eventLogPath == null) {
-            return "runs";
-        }
-        return this.eventLogArchivePath;
+    public StorageEngine getStorageEngine() {
+        return this.storageEngine;
+    }
+
+    public void setEventLogDirectory(String eventLogDirectory) {
+        this.eventLogDirectory = eventLogDirectory;
+    }
+
+    public void setStorageEngine(StorageEngine storageEngine) {
+        this.storageEngine = storageEngine;
     }
 }

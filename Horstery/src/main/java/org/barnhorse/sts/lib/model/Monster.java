@@ -20,6 +20,9 @@ public class Monster extends Creature {
     public String moveName;
     public String intent;
 
+    public Monster() {
+    }
+
     public Monster(AbstractMonster monster) {
         super(monster);
 

@@ -3,6 +3,8 @@ package org.barnhorse.sts.patches.dispatch;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,4 +35,12 @@ public class PatchEventManager {
         subscribers.forEach(sub -> sub.onCardRemoved(deck, card));
     }
 
+    public static void dispatchCardUsed(AbstractPlayer player, AbstractCard card, AbstractMonster monster, int energyOnUse) {
+        subscribers.forEach(sub -> sub.onCardUsed(player, card, monster, energyOnUse));
+    }
+
+    public static void dispatchGameDisposed() {
+        subscribers.forEach(sub -> sub.onDispose());
+
+    }
 }

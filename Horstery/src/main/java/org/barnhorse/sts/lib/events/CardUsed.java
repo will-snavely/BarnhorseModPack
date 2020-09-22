@@ -6,13 +6,17 @@ import org.barnhorse.sts.lib.model.Card;
 import org.barnhorse.sts.lib.model.Creature;
 
 public class CardUsed extends GameEvent {
-    public static String key = "card_used";
+    public final static String key = "card_used";
 
     public Card card;
     public Creature target;
 
-    public CardUsed(AbstractCard card, AbstractCreature target) {
+    public CardUsed() {
         super(key, "Card played during combat");
+    }
+
+    public CardUsed(AbstractCard card, AbstractCreature target) {
+        this();
         if (card != null) {
             this.card = new Card(card);
         }
