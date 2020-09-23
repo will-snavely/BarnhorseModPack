@@ -1,6 +1,5 @@
 package org.barnhorse.sts.lib;
 
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import org.barnhorse.sts.lib.consumer.EventConsumer;
 import org.barnhorse.sts.lib.events.GameEvent;
 

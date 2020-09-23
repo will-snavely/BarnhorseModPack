@@ -13,6 +13,7 @@ public class Creature {
     public int maxHealth;
     public boolean isEscaping;
     public List<Power> powers;
+    public int objectId;
 
     public Creature() {
     }
@@ -25,5 +26,6 @@ public class Creature {
         this.maxHealth = creature.maxHealth;
         this.isEscaping = creature.isEscaping;
         this.powers = creature.powers.stream().map(Power::new).collect(Collectors.toList());
+        this.objectId = creature.hashCode();
     }
 }

@@ -15,4 +15,17 @@ public class PlayerTurnStart extends GameEvent {
         this();
         this.player = new Player(player);
     }
+
+    public PlayerTurnStart(AbstractPlayer player, boolean verbose) {
+        this();
+        if (verbose) {
+            this.player = new Player();
+        } else {
+            this.player = new Player(
+                    player,
+                    false,
+                    false,
+                    false);
+        }
+    }
 }

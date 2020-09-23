@@ -43,4 +43,16 @@ public class PatchEventManager {
         subscribers.forEach(sub -> sub.onDispose());
 
     }
+
+    public static void dispatchAbandonedRun(AbstractPlayer player) {
+        subscribers.forEach(sub -> sub.onAbandonRun(player));
+    }
+
+    public static void dispatchSaveAndQuit() {
+        subscribers.forEach(sub -> sub.onSaveAndQuit());
+    }
+
+    public static void dispatchPlayerTurnStart(AbstractPlayer player) {
+        subscribers.forEach(sub -> sub.onPlayerTurnStart(player));
+    }
 }

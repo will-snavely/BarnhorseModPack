@@ -2,6 +2,7 @@ package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,18 +37,23 @@ public class Player {
     }
 
     public Player(AbstractPlayer player) {
+        this(player, true, true, true);
+    }
+
+    public Player(
+            AbstractPlayer player,
+            boolean includeMasterDeck,
+            boolean includeRelics,
+            boolean includeBlights) {
         this.chosenClass = player.chosenClass.name();
         this.gameHandSize = player.gameHandSize;
         this.masterHandSize = player.masterHandSize;
         this.startingMaxHP = player.startingMaxHP;
-        this.masterDeck = player.masterDeck.group.stream().map(Card::new).collect(Collectors.toList());
         this.drawPile = player.drawPile.group.stream().map(Card::new).collect(Collectors.toList());
         this.hand = player.hand.group.stream().map(Card::new).collect(Collectors.toList());
         this.discardPile = player.discardPile.group.stream().map(Card::new).collect(Collectors.toList());
         this.exhaustPile = player.exhaustPile.group.stream().map(Card::new).collect(Collectors.toList());
         this.limbo = player.limbo.group.stream().map(Card::new).collect(Collectors.toList());
-        this.relics = player.relics.stream().map(Relic::new).collect(Collectors.toList());
-        this.blights = player.blights.stream().map(Blight::new).collect(Collectors.toList());
         this.potionSlots = player.potionSlots;
         this.potions = player.potions.stream().map(Potion::new).collect(Collectors.toList());
         this.energy = player.energy.energy;
@@ -61,5 +67,20 @@ public class Player {
         this.masterMaxOrbs = player.masterMaxOrbs;
         this.maxOrbs = player.maxOrbs;
         this.stance = new Stance(player.stance);
+
+        this.masterDeck = null;
+        if (includeMasterDeck) {
+            this.masterDeck = player.masterDeck.group.stream().map(Card::new).collect(Collectors.toList());
+        }
+
+        this.relics = null;
+        if (includeRelics) {
+            this.relics = player.relics.stream().map(Relic::new).collect(Collectors.toList());
+        }
+
+        this.blights = null;
+        if (includeBlights) {
+            this.blights = player.blights.stream().map(Blight::new).collect(Collectors.toList());
+        }
     }
 }

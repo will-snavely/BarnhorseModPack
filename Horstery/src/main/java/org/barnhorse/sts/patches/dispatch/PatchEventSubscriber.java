@@ -18,4 +18,10 @@ public interface PatchEventSubscriber {
     void onCardUsed(AbstractPlayer player, AbstractCard card, AbstractMonster monster, int energyOnUse);
 
     void onDispose();
+
+    void onAbandonRun(AbstractPlayer player);
+
+    void onSaveAndQuit();
+
+    void onPlayerTurnStart(AbstractPlayer player);
 }
