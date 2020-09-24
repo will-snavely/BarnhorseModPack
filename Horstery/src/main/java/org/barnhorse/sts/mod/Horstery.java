@@ -397,13 +397,15 @@ public class Horstery implements
 
     @Override
     public void onPlayerDied(AbstractPlayer player, List<GameOverStat> stats) {
-        publishEvent(new PlayerDied(player, stats));
-        this.exitRun();
-        try {
-            this.archiveRun(Settings.seed, player);
-            this.deleteRun(Settings.seed, player);
-        } catch (Exception e) {
-            logger.error("Failed to archive current run!", e);
+        if (this.state == ModState.IN_RUN) {
+            publishEvent(new PlayerDied(player, stats));
+            this.exitRun();
+            try {
+                this.archiveRun(Settings.seed, player);
+                this.deleteRun(Settings.seed, player);
+            } catch (Exception e) {
+                logger.error("Failed to archive current run!", e);
+            }
         }
     }
 
@@ -422,6 +424,16 @@ public class Horstery implements
     @Override
     public void onEnterShop(ShopScreen shop) {
         publishEvent(new EnterShop(AbstractDungeon.player, shop));
+    }
+
+    @Override
+    public void onPurchaseCard(AbstractCard card, int price) {
+        publishEvent(new PurchaseCard(card, price));
+    }
+
+    @Override
+    public void onPurgeCard(AbstractCard card, int price) {
+        publishEvent(new PurchasePurge(card, price));
     }
 
     @Override

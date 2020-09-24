@@ -54,4 +54,8 @@ public interface PatchEventSubscriber {
     void onPlayerVictory(AbstractPlayer Player, List<GameOverStat> stats);
 
     void onEnterShop(ShopScreen shop);
+
+    void onPurchaseCard(AbstractCard card, int price);
+
+    void onPurgeCard(AbstractCard selected, int price);
 }

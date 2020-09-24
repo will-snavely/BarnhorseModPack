@@ -109,4 +109,12 @@ public class PatchEventManager {
     public static void dispatchEnterShop(ShopScreen shop) {
         subscribers.forEach(sub -> sub.onEnterShop(shop));
     }
+
+    public static void dispatchPurchaseChard(AbstractCard card, int price) {
+        subscribers.forEach(sub -> sub.onPurchaseCard(card, price));
+    }
+
+    public static void dispatchCardPurged(AbstractCard selected, int price) {
+        subscribers.forEach(sub -> sub.onPurgeCard(selected, price));
+    }
 }
