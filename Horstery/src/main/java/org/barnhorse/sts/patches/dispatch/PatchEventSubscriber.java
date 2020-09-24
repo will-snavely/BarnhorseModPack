@@ -3,8 +3,14 @@ package org.barnhorse.sts.patches.dispatch;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.screens.GameOverStat;
+import com.megacrit.cardcrawl.shop.ShopScreen;
+
+import java.util.List;
 
 public interface PatchEventSubscriber {
     void onGameActionStart(AbstractGameAction action);
@@ -24,4 +30,28 @@ public interface PatchEventSubscriber {
     void onSaveAndQuit();
 
     void onPlayerTurnStart(AbstractPlayer player);
+
+    void onPlayerDamaged(AbstractPlayer player, DamageInfo info, int actualDamage);
+
+    void onMonsterDamaged(AbstractMonster monster, DamageInfo info, int actualDamage);
+
+    void onBlockGained(AbstractCreature thisRef,
+                       int blockAmount,
+                       int startingBlock,
+                       int endingBlock,
+                       int totalBlockGained);
+
+    void onBlockLost(AbstractCreature thisRef,
+                     int blockAmount,
+                     int startingBlock,
+                     int endingBlock,
+                     int totalBlockLost);
+
+    void onMonsterDied(AbstractMonster monster);
+
+    void onPlayerDied(AbstractPlayer player, List<GameOverStat> stats);
+
+    void onPlayerVictory(AbstractPlayer Player, List<GameOverStat> stats);
+
+    void onEnterShop(ShopScreen shop);
 }

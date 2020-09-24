@@ -5,7 +5,7 @@ import org.barnhorse.sts.lib.model.Player;
 
 public class PlayerTurnStart extends GameEvent {
     public final static String key = "player_turn_start";
-    Player player;
+    public Player player;
 
     public PlayerTurnStart() {
         super(key, "The player started a new turn");

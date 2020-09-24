@@ -4,12 +4,11 @@ import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.DamageAction;
-import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
-import com.megacrit.cardcrawl.actions.common.EnableEndTurnButtonAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
@@ -18,6 +17,8 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 import com.megacrit.cardcrawl.saveAndContinue.SaveFile;
+import com.megacrit.cardcrawl.screens.GameOverStat;
+import com.megacrit.cardcrawl.shop.ShopScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.EventPublisher;
@@ -25,7 +26,6 @@ import org.barnhorse.sts.lib.consumer.EventConsumer;
 import org.barnhorse.sts.lib.consumer.FileConsumer;
 import org.barnhorse.sts.lib.consumer.NitriteConsumer;
 import org.barnhorse.sts.lib.events.*;
-import org.barnhorse.sts.lib.model.Player;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
 
@@ -36,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.function.Predicate;
 
 @SpireInitializer
@@ -358,21 +359,78 @@ public class Horstery implements
     }
 
     @Override
+    public void onPlayerDamaged(AbstractPlayer player, DamageInfo info, int actualDamage) {
+        this.publishEvent(new PlayerDamaged(player, info, actualDamage));
+    }
+
+    @Override
+    public void onMonsterDamaged(AbstractMonster monster, DamageInfo info, int actualDamage) {
+        this.publishEvent(new MonsterDamaged(monster, info, actualDamage));
+    }
+
+    @Override
+    public void onBlockGained(
+            AbstractCreature creature,
+            int amount,
+            int startingBlock,
+            int endingBlock,
+            int delta) {
+        publishEvent(new BlockGained(creature, amount, startingBlock, endingBlock, delta));
+    }
+
+    @Override
+    public void onBlockLost(
+            AbstractCreature creature,
+            int amount,
+            int startingBlock,
+            int endingBlock,
+            int delta) {
+        if (amount > 0 || delta != 0) {
+            publishEvent(new BlockLost(creature, amount, startingBlock, endingBlock, delta));
+        }
+    }
+
+    @Override
+    public void onMonsterDied(AbstractMonster monster) {
+        publishEvent(new MonsterDied(monster));
+    }
+
+    @Override
+    public void onPlayerDied(AbstractPlayer player, List<GameOverStat> stats) {
+        publishEvent(new PlayerDied(player, stats));
+        this.exitRun();
+        try {
+            this.archiveRun(Settings.seed, player);
+            this.deleteRun(Settings.seed, player);
+        } catch (Exception e) {
+            logger.error("Failed to archive current run!", e);
+        }
+    }
+
+    @Override
+    public void onPlayerVictory(AbstractPlayer player, List<GameOverStat> stats) {
+        publishEvent(new PlayerVictory(player, stats));
+        this.exitRun();
+        try {
+            this.archiveRun(Settings.seed, player);
+            this.deleteRun(Settings.seed, player);
+        } catch (Exception e) {
+            logger.error("Failed to archive current run!", e);
+        }
+    }
+
+    @Override
+    public void onEnterShop(ShopScreen shop) {
+        publishEvent(new EnterShop(AbstractDungeon.player, shop));
+    }
+
+    @Override
     public void receiveOnBattleStart(AbstractRoom room) {
         publishEvent(new BattleStart(room));
     }
 
     @Override
     public void onGameActionStart(AbstractGameAction action) {
-        if (action == null) {
-            return;
-        }
-
-        if (action instanceof DamageAction) {
-            this.publishEvent(new DamageSingle((DamageAction) action));
-        } else if (action instanceof DamageAllEnemiesAction) {
-            this.publishEvent(new DamageAll((DamageAllEnemiesAction) action));
-        }
     }
 
     @Override

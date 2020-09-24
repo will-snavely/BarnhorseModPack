@@ -3,8 +3,12 @@ package org.barnhorse.sts.patches.dispatch;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.screens.GameOverStat;
+import com.megacrit.cardcrawl.shop.ShopScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,5 +58,55 @@ public class PatchEventManager {
 
     public static void dispatchPlayerTurnStart(AbstractPlayer player) {
         subscribers.forEach(sub -> sub.onPlayerTurnStart(player));
+    }
+
+    public static void dispatchPlayerDamaged(AbstractPlayer player, DamageInfo info, int actualDamage) {
+        subscribers.forEach(sub -> sub.onPlayerDamaged(player, info, actualDamage));
+    }
+
+    public static void dispatchMonsterDamaged(AbstractMonster monster, DamageInfo info, int actualDamage) {
+        subscribers.forEach(sub -> sub.onMonsterDamaged(monster, info, actualDamage));
+    }
+
+    public static void dispatchBlockGained(
+            AbstractCreature creature,
+            int amount,
+            int startingBlock,
+            int endingBlock) {
+        subscribers.forEach(sub -> sub.onBlockGained(
+                creature,
+                amount,
+                startingBlock,
+                endingBlock,
+                endingBlock - startingBlock));
+    }
+
+    public static void dispatchBlockLost(
+            AbstractCreature creature,
+            int amount,
+            int startingBlock,
+            int endingBlock) {
+        subscribers.forEach(sub -> sub.onBlockLost(
+                creature,
+                amount,
+                startingBlock,
+                endingBlock,
+                endingBlock - startingBlock));
+    }
+
+    public static void dispatchMonsterDied(AbstractMonster monster) {
+        subscribers.forEach(sub -> sub.onMonsterDied(monster));
+    }
+
+    public static void dispatchPlayerDied(AbstractPlayer player, List<GameOverStat> stats) {
+        subscribers.forEach(sub -> sub.onPlayerDied(player, stats));
+    }
+
+    public static void dispatchPlayerVictory(AbstractPlayer player, List<GameOverStat> stats) {
+        subscribers.forEach(sub -> sub.onPlayerVictory(player, stats));
+    }
+
+    public static void dispatchEnterShop(ShopScreen shop) {
+        subscribers.forEach(sub -> sub.onEnterShop(shop));
     }
 }
