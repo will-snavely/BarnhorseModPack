@@ -19,6 +19,8 @@ import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 import com.megacrit.cardcrawl.saveAndContinue.SaveFile;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
+import com.megacrit.cardcrawl.shop.StorePotion;
+import com.megacrit.cardcrawl.shop.StoreRelic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.EventPublisher;
@@ -434,6 +436,16 @@ public class Horstery implements
     @Override
     public void onPurgeCard(AbstractCard card, int price) {
         publishEvent(new PurchasePurge(card, price));
+    }
+
+    @Override
+    public void onPurchasePotion(StorePotion potion) {
+        publishEvent(new PurchasePotion(potion));
+    }
+
+    @Override
+    public void onPurchaseRelic(StoreRelic relic) {
+        publishEvent(new PurchaseRelic(relic));
     }
 
     @Override

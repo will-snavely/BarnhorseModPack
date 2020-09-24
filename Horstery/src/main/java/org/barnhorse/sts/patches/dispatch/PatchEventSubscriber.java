@@ -9,6 +9,8 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
+import com.megacrit.cardcrawl.shop.StorePotion;
+import com.megacrit.cardcrawl.shop.StoreRelic;
 
 import java.util.List;
 
@@ -58,4 +60,8 @@ public interface PatchEventSubscriber {
     void onPurchaseCard(AbstractCard card, int price);
 
     void onPurgeCard(AbstractCard selected, int price);
+
+    void onPurchasePotion(StorePotion potion);
+
+    void onPurchaseRelic(StoreRelic relic);
 }

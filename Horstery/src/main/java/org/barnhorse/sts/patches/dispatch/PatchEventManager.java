@@ -9,6 +9,8 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
+import com.megacrit.cardcrawl.shop.StorePotion;
+import com.megacrit.cardcrawl.shop.StoreRelic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +118,13 @@ public class PatchEventManager {
 
     public static void dispatchCardPurged(AbstractCard selected, int price) {
         subscribers.forEach(sub -> sub.onPurgeCard(selected, price));
+    }
+
+    public static void dispatchPurchasePotion(StorePotion potion) {
+        subscribers.forEach(sub -> sub.onPurchasePotion(potion));
+    }
+
+    public static void dispatchPurchaseRelic(StoreRelic relic) {
+        subscribers.forEach(sub -> sub.onPurchaseRelic(relic));
     }
 }
