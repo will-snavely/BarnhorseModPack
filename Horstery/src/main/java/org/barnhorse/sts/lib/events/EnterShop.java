@@ -1,6 +1,7 @@
 package org.barnhorse.sts.lib.events;
 
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.shop.OnSaleTag;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
@@ -25,6 +26,7 @@ public class EnterShop extends GameEvent {
     public boolean purgeAvailable;
     public int purgeCostRamped;
     public int purgeCostActual;
+    public String saleId;
 
     public EnterShop() {
         super(key, "Entered a shop");
@@ -57,5 +59,13 @@ public class EnterShop extends GameEvent {
         this.purgeAvailable = shop.purgeAvailable;
         this.purgeCostRamped = ShopScreen.purgeCost;
         this.purgeCostActual = ShopScreen.actualPurgeCost;
+
+        OnSaleTag saleTag = ReflectionHelper
+                .<OnSaleTag>tryGetFieldValue(shop, "saleTag", true)
+                .orElse(null);
+
+        if (saleTag != null) {
+            this.saleId = saleTag.card.uuid.toString();
+        }
     }
 }
