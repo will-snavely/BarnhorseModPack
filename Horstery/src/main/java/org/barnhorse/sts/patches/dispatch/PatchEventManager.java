@@ -7,13 +7,17 @@ import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
+import org.barnhorse.sts.lib.model.Relic;
+import org.barnhorse.sts.patches.util.RelicEffect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PatchEventManager {
     private static final List<PatchEventSubscriber> subscribers = new ArrayList<>();
@@ -127,4 +131,14 @@ public class PatchEventManager {
     public static void dispatchPurchaseRelic(StoreRelic relic) {
         subscribers.forEach(sub -> sub.onPurchaseRelic(relic));
     }
+
+    public static void dispatchRelicTriggered(
+            AbstractRelic relic,
+            Map<RelicEffect, Integer> summary) {
+        subscribers.forEach(sub -> sub.onRelicTriggered(relic, summary));
+    }
+
+    public static void dispatchCardBottled(AbstractRelic thisRef, AbstractCard card) {
+    }
+
 }

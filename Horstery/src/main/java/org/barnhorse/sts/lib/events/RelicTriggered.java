@@ -1,28 +1,25 @@
 package org.barnhorse.sts.lib.events;
 
-import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import org.barnhorse.sts.lib.model.Relic;
-import org.barnhorse.sts.lib.util.ReflectionHelper;
+import org.barnhorse.sts.patches.util.RelicEffect;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RelicTriggered extends GameEvent {
     public final static String key = "relic_activated";
 
     public Relic relic;
+    public Map<RelicEffect, Integer> summary;
 
     public RelicTriggered() {
         super(key, "A relic was activated");
     }
 
-    public RelicTriggered(AbstractRelic relic) {
+    public RelicTriggered(AbstractRelic relic, Map<RelicEffect, Integer> summary) {
         this();
         this.relic = new Relic(relic);
-    }
-
-    public RelicTriggered(RelicAboveCreatureAction action) {
-        this();
-        ReflectionHelper.
-                <AbstractRelic>tryGetFieldValue(action, "relic", true)
-                .ifPresent(r -> this.relic = new Relic(r));
+        this.summary = new HashMap<>(summary);
     }
 }

@@ -20,7 +20,7 @@
 
     <modules>
         <module>Horstery</module>
-        <module>PatchGen</module>
+        <module>PatchHelper</module>
     </modules>
 
     <dependencies>

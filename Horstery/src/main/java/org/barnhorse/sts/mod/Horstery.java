@@ -4,7 +4,6 @@ import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
@@ -31,6 +30,7 @@ import org.barnhorse.sts.lib.consumer.NitriteConsumer;
 import org.barnhorse.sts.lib.events.*;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
+import org.barnhorse.sts.patches.util.RelicEffect;
 
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +40,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 @SpireInitializer
@@ -450,19 +451,17 @@ public class Horstery implements
     }
 
     @Override
+    public void onRelicTriggered(AbstractRelic relic, Map<RelicEffect, Integer> summary) {
+        publishEvent(new RelicTriggered(relic, summary));
+    }
+
+    @Override
     public void receiveOnBattleStart(AbstractRoom room) {
         publishEvent(new BattleStart(room));
     }
 
     @Override
     public void onGameActionStart(AbstractGameAction action) {
-        if (action != null) {
-            if (action instanceof RelicAboveCreatureAction) {
-                RelicAboveCreatureAction relicAbove =
-                        (RelicAboveCreatureAction) action;
-                publishEvent(new RelicTriggered(relicAbove));
-            }
-        }
     }
 
     @Override
