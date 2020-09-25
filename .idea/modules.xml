@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Horstery/Horstery.iml" filepath="$PROJECT_DIR$/Horstery/Horstery.iml" />
       <module fileurl="file://$PROJECT_DIR$/ModPack.iml" filepath="$PROJECT_DIR$/ModPack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PatchGen/PatchGen.iml" filepath="$PROJECT_DIR$/PatchGen/PatchGen.iml" />
     </modules>
   </component>
 </project>

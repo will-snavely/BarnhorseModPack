@@ -4,6 +4,7 @@ import basemod.BaseMod;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
@@ -455,6 +456,13 @@ public class Horstery implements
 
     @Override
     public void onGameActionStart(AbstractGameAction action) {
+        if (action != null) {
+            if (action instanceof RelicAboveCreatureAction) {
+                RelicAboveCreatureAction relicAbove =
+                        (RelicAboveCreatureAction) action;
+                publishEvent(new RelicTriggered(relicAbove));
+            }
+        }
     }
 
     @Override
