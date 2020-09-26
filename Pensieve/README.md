@@ -56,6 +56,13 @@ directly. See the
 [Event Viewer](./src/main/java/org/barnhorse/sts/viewer/View.java)
 for a relatively simple example.
 
+3. Configure the mod to produce raw JSON output, and inspect the
+run files directly. See the "Configuration" details below. You
+can also export JSON from the Event Viewer tool. Note that JSON-formatted
+run files cannot be loaded back into the viewer tool. Here is a
+[sample](./sample/sample.lines) of what the raw JSON output
+looks like.
+
 ## Mod Configuration
 Some minor configuration can be supplied by creating a JSON
 file at `mods/etc/barnhorse/pensieve/config.json`.
