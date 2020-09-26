@@ -19,7 +19,7 @@ This should then be placed in the `mods` folder of
 your Slay the Spire installation directory (if you 
 are using Steam, you can find this by right-clicking
 the game, and navigating to "Manage", then selecting
-"Browse Local Files")
+"Browse Local Files").
 
 ## Enabling
 
@@ -42,7 +42,7 @@ runs have a slightly different naming scheme:
 ## Viewing the Run Data
 There is currently no integration with the Slay the Spire client,
 though this might be done in the future. Therefore, to view the 
-run data, you currently have a few options:
+run data, you currently must consider the following options:
 
 1. The `Pensieve.jar` file can be executed (e.g., double-clicked
 in Windows) to launch a simple event viewer. From here, you can
