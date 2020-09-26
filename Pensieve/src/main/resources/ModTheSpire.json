@@ -1,0 +1,10 @@
+{
+  "modid": "barnhorse_pensieve",
+  "name": "Pensieve",
+  "author_list": ["barnhorse"],
+  "description": "Improved Run History",
+  "version": "0.0.1",
+  "sts_version": "06-22-2020",
+  "mts_version": "3.16.0",
+  "dependencies": ["basemod"]
+}
