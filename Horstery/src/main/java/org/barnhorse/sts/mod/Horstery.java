@@ -465,7 +465,7 @@ public class Horstery implements
 
     @Override
     public void onEventEntered(AbstractEvent event) {
-        publishEvent(new EventEntered(event));
+        publishEvent(new EventStarted(event));
     }
 
     @Override
@@ -508,6 +508,11 @@ public class Horstery implements
     @Override
     public void dispatchMapGenerated() {
         publishEvent(new MapGenerated(AbstractDungeon.map, AbstractDungeon.bossKey));
+    }
+
+    @Override
+    public void dispatchVisitMapNode(MapRoomNode currMapNode) {
+        publishEvent(new VisitMapNode(currMapNode));
     }
 
     @Override

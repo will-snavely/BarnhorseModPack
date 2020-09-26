@@ -25,10 +25,10 @@ public class MapGenerated extends GameEvent {
         this.edges = new ArrayList<>();
         for (int i = 0; i < map.size(); i++) {
             for (int j = 0; j < map.get(i).size(); j++) {
-                MapRoomNode room = map.get(i).get(j);
-                if (room != null && room.getRoom() != null) {
-                    nodes.add(new MapNode(room.x, room.y, room));
-                    for (MapEdge edge : room.getEdges()) {
+                MapRoomNode node = map.get(i).get(j);
+                if (node != null && node.getRoom() != null) {
+                    nodes.add(new MapNode(node));
+                    for (MapEdge edge : node.getEdges()) {
                         edges.add(new MapNodeEdge(
                                 edge.srcX,
                                 edge.srcY,

@@ -1,7 +1,6 @@
 package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.map.MapRoomNode;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 public class MapNode {
     public String type;
@@ -13,11 +12,10 @@ public class MapNode {
     public MapNode() {
     }
 
-    public MapNode(int x, int y, MapRoomNode node) {
-        this.x = x;
-        this.y = y;
-
+    public MapNode(MapRoomNode node) {
         if (node != null) {
+            this.x = node.x;
+            this.y = node.y;
             if (node.room != null) {
                 this.type = node.room.getClass().getName();
                 this.symbol = node.room.getMapSymbol();
