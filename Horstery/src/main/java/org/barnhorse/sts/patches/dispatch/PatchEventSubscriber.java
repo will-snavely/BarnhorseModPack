@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
@@ -78,4 +79,8 @@ public interface PatchEventSubscriber {
     void onEventEntered(AbstractEvent event);
 
     void onQuestionMarkResolved(EventHelper.RoomResult result);
+
+    void onPotionObtained(AbstractPotion potion);
+
+    void onPotionUsed(AbstractPotion potion, AbstractCreature target);
 }

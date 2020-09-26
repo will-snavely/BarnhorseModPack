@@ -44,7 +44,6 @@ public class Card {
     public boolean isLocked;
     public boolean isMagicNumberModified;
     public boolean isMultiDamage;
-    public List<String> keywords;
     public int magicNumber;
     public int misc;
     public int[] multiDamage;
@@ -112,7 +111,6 @@ public class Card {
         this.isMultiDamage = ReflectionHelper
                 .<Boolean>tryGetFieldValue(card, "isMultiDamage", true)
                 .orElse(false);
-        this.keywords = card.keywords;
         this.magicNumber = card.magicNumber;
         this.misc = card.misc;
         this.multiDamage = card.multiDamage;

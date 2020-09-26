@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
@@ -150,5 +151,13 @@ public class PatchEventManager {
 
     public static void dispatchRollQuestionMark(EventHelper.RoomResult result) {
         subscribers.forEach(sub -> sub.onQuestionMarkResolved(result));
+    }
+
+    public static void dispatchPotionObtained(AbstractPotion potion) {
+        subscribers.forEach(sub -> sub.onPotionObtained(potion));
+    }
+
+    public static void dispatchPotionUsed(AbstractPotion potion, AbstractCreature target) {
+        subscribers.forEach(sub -> sub.onPotionUsed(potion, target));
     }
 }

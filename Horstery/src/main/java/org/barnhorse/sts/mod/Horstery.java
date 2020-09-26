@@ -15,6 +15,7 @@ import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
@@ -470,6 +471,16 @@ public class Horstery implements
     @Override
     public void onQuestionMarkResolved(EventHelper.RoomResult result) {
         publishEvent(new QuestionMarkResolved(result));
+    }
+
+    @Override
+    public void onPotionObtained(AbstractPotion potion) {
+        publishEvent(new PotionObtained(potion));
+    }
+
+    @Override
+    public void onPotionUsed(AbstractPotion potion, AbstractCreature target) {
+        publishEvent(new PotionUsed(potion, target));
     }
 
     @Override

@@ -56,6 +56,7 @@ public enum RelicEffect {
     NoSmith,
     PandorasBox,
     PlayerStrengthGain,
+    PotionEaten,
     PotionReward,
     RemoveCard,
     RemoveDebuff,
