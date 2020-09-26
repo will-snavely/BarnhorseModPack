@@ -65,8 +65,9 @@ public class View {
     private class FileOpenListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser chooser = new JFileChooser(
-                    FileSystemView.getFileSystemView().getHomeDirectory());
+            String userDirLocation = System.getProperty("user.dir");
+            File userDir = new File(userDirLocation);
+            JFileChooser chooser = new JFileChooser(userDir);
             int result = chooser.showOpenDialog(null);
             if (result == JFileChooser.APPROVE_OPTION) {
                 View.this.onFileSelected(chooser.getSelectedFile());
