@@ -73,7 +73,7 @@ public class Pensieve implements
     public static final Logger logger = LogManager.getLogger(Pensieve.class.getName());
 
     private static final Path modWorkingPath = Paths
-            .get("mods", "etc", "barnhorse", "horstery")
+            .get("mods", "etc", "barnhorse", "pensieve")
             .toAbsolutePath();
     private static final Path runsPath = modWorkingPath.resolve("runs");
     private static final Path archivePath = runsPath.resolve("archive");
@@ -163,7 +163,7 @@ public class Pensieve implements
             config = createConfiguration();
             createDirectories(config);
         } catch (Exception e) {
-            logger.error("Failed to initialize Horstery mod.", e);
+            logger.error("Failed to initialize Pensieve mod.", e);
             return;
         }
 
