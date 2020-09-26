@@ -14,10 +14,12 @@ import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
+import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.lib.model.RelicEffect;
 
@@ -189,5 +191,13 @@ public class PatchEventManager {
 
     public static void dispatchVisitMapNode(MapRoomNode currMapNode) {
         subscribers.forEach(sub -> sub.dispatchVisitMapNode(currMapNode));
+    }
+
+    public static void dispatchEnterRestRoom(RestRoom room) {
+        subscribers.forEach(sub -> sub.dispatchEnterRestRoom(room));
+    }
+
+    public static void dispatchRestRoomOptionSelected(AbstractCampfireOption option) {
+        subscribers.forEach(sub -> sub.dispatchRestRoomOptionSelected(option));
     }
 }

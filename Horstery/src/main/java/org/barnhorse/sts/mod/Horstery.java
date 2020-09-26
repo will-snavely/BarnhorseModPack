@@ -20,12 +20,14 @@ import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 import com.megacrit.cardcrawl.saveAndContinue.SaveFile;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
+import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -513,6 +515,16 @@ public class Horstery implements
     @Override
     public void dispatchVisitMapNode(MapRoomNode currMapNode) {
         publishEvent(new VisitMapNode(currMapNode));
+    }
+
+    @Override
+    public void dispatchEnterRestRoom(RestRoom room) {
+        publishEvent(new EnterRestRoom(room));
+    }
+
+    @Override
+    public void dispatchRestRoomOptionSelected(AbstractCampfireOption option) {
+        publishEvent(new RestRoomOptionSelected(option));
     }
 
     @Override
