@@ -19,7 +19,7 @@ This should then be placed in the `mods` folder of
 your Slay the Spire installation directory (if you 
 are using Steam, you can find this by right-clicking
 the game, and navigating to "Manage", then selecting
-"Browse Local FIles")
+"Browse Local Files")
 
 ## Enabling
 
