@@ -86,4 +86,6 @@ public interface PatchEventSubscriber {
     void onPotionUsed(AbstractPotion potion, AbstractCreature target);
 
     void onKeyObtained(ObtainKeyEffect.KeyColor color);
+
+    void onEnemyTurnStart();
 }

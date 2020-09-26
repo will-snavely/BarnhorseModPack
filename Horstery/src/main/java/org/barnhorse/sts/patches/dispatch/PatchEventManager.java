@@ -165,4 +165,8 @@ public class PatchEventManager {
     public static void dispatchKeyObtained(ObtainKeyEffect.KeyColor color) {
         subscribers.forEach(sub -> sub.onKeyObtained(color));
     }
+
+    public static void dispatchEnemyTurnStart() {
+        subscribers.forEach(sub -> sub.onEnemyTurnStart());
+    }
 }

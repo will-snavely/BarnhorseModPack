@@ -20,7 +20,7 @@ public class FileConsumer extends EventConsumer {
     @Override
     public void setup() {
         try {
-            this.printWriter = new PrintWriter(new FileWriter(this.file));
+            this.printWriter = new PrintWriter(new FileWriter(this.file, true));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

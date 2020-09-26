@@ -1,12 +1,10 @@
 package org.barnhorse.sts.lib.consumer;
 
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import org.barnhorse.sts.lib.events.GameEvent;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.objects.ObjectRepository;
 
 import java.io.File;
-import java.util.function.Consumer;
 
 public class NitriteConsumer extends EventConsumer {
     private File file;
@@ -17,7 +15,6 @@ public class NitriteConsumer extends EventConsumer {
         assert file != null;
         this.file = file;
     }
-
 
     @Override
     public void setup() {

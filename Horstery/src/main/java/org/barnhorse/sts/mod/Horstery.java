@@ -186,7 +186,7 @@ public class Horstery implements
         }
     }
 
-    private void enterRun(Long seed, AbstractPlayer player) {
+    private void enterRun(Long seed, AbstractPlayer player, boolean clobber) {
         if (this.state == ModState.ERROR) {
             logger.warn("Tried to enter a run in the ERROR state, refusing to do so.");
         }
@@ -200,7 +200,7 @@ public class Horstery implements
 
         if (this.publisher == null) {
             File eventFile = this.getRunEventPath(seed, player).toFile();
-            if (eventFile.exists()) {
+            if (eventFile.exists() && clobber) {
                 if (!eventFile.delete()) {
                     logger.error("Failed to clobber event file!");
                     this.enterErrorState();
@@ -323,13 +323,13 @@ public class Horstery implements
 
     @Override
     public void receivePostDungeonInitialize() {
-        this.enterRun(Settings.seed, AbstractDungeon.player);
+        this.enterRun(Settings.seed, AbstractDungeon.player, true);
         publishEvent(RunStart.fromGameSettings());
     }
 
     @Override
     public void receiveStartGame() {
-        this.enterRun(Settings.seed, AbstractDungeon.player);
+        this.enterRun(Settings.seed, AbstractDungeon.player, false);
     }
 
     @Override
@@ -490,6 +490,11 @@ public class Horstery implements
     }
 
     @Override
+    public void onEnemyTurnStart() {
+        publishEvent(new EnemyTurnStart(AbstractDungeon.getCurrRoom()));
+    }
+
+    @Override
     public void receiveOnBattleStart(AbstractRoom room) {
         publishEvent(new BattleStart(room));
     }
@@ -519,7 +524,7 @@ public class Horstery implements
 
     @Override
     public void receiveRelicGet(AbstractRelic abstractRelic) {
-        publishEvent(new RelicAdded(abstractRelic));
+        publishEvent(new RelicObtained(abstractRelic));
     }
 
     @Override
