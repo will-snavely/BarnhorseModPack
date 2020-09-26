@@ -79,7 +79,6 @@ public class Horstery implements
     private EventPublisher publisher;
     private Configuration config;
     private ModState state;
-    private Throwable error;
 
     public Horstery(Configuration config) {
         this.config = config;
@@ -248,9 +247,6 @@ public class Horstery implements
         if (this.state == ModState.ERROR) {
             logger.warn("Tried to publish an event, but the mod is in an error state, skipping...");
             logger.warn("\tEvent: {}", event.key);
-            if (this.error != null) {
-                logger.warn("\tError: {}", this.error.getMessage());
-            }
             return;
         }
 
