@@ -22,6 +22,7 @@ import com.megacrit.cardcrawl.shop.StoreRelic;
 import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.lib.model.RelicEffect;
+import org.barnhorse.sts.lib.model.UpgradeSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -199,5 +200,13 @@ public class PatchEventManager {
 
     public static void dispatchRestRoomOptionSelected(AbstractCampfireOption option) {
         subscribers.forEach(sub -> sub.dispatchRestRoomOptionSelected(option));
+    }
+
+    public static void dispatchCardUpgraded(AbstractCard card, UpgradeSource source) {
+        subscribers.forEach(sub -> sub.dispatchCardUpgraded(card, source));
+    }
+
+    public static void dispatchGoldGained(int amount) {
+        subscribers.forEach(sub -> sub.dispatchGoldGained(amount));
     }
 }

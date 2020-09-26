@@ -46,6 +46,7 @@ public enum RelicEffect {
     HealBuff,
     HealReduction,
     LoseHP,
+    LoseGold,
     LoseStrength,
     MirrorCard,
     MonsterStrengthGain,

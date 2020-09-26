@@ -22,6 +22,7 @@ import com.megacrit.cardcrawl.shop.StoreRelic;
 import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.lib.model.RelicEffect;
+import org.barnhorse.sts.lib.model.UpgradeSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,4 +106,8 @@ public interface PatchEventSubscriber {
     void dispatchEnterRestRoom(RestRoom room);
 
     void dispatchRestRoomOptionSelected(AbstractCampfireOption option);
+
+    void dispatchCardUpgraded(AbstractCard card, UpgradeSource source);
+
+    void dispatchGoldGained(int amount);
 }

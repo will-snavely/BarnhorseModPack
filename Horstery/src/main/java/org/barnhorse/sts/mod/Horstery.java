@@ -37,6 +37,7 @@ import org.barnhorse.sts.lib.consumer.FileConsumer;
 import org.barnhorse.sts.lib.consumer.NitriteConsumer;
 import org.barnhorse.sts.lib.events.*;
 import org.barnhorse.sts.lib.model.RelicEffect;
+import org.barnhorse.sts.lib.model.UpgradeSource;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
 
@@ -525,6 +526,16 @@ public class Horstery implements
     @Override
     public void dispatchRestRoomOptionSelected(AbstractCampfireOption option) {
         publishEvent(new RestRoomOptionSelected(option));
+    }
+
+    @Override
+    public void dispatchCardUpgraded(AbstractCard card, UpgradeSource source) {
+        publishEvent(new CardUpgraded(card, source));
+    }
+
+    @Override
+    public void dispatchGoldGained(int amount) {
+        publishEvent(new GoldGained(amount, AbstractDungeon.player.gold));
     }
 
     @Override
