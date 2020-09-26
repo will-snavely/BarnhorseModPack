@@ -6,14 +6,16 @@ import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
-import org.barnhorse.sts.lib.model.Relic;
-import org.barnhorse.sts.patches.util.RelicEffect;
+import org.barnhorse.sts.lib.model.RelicEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +141,14 @@ public class PatchEventManager {
     }
 
     public static void dispatchCardBottled(AbstractRelic thisRef, AbstractCard card) {
+        subscribers.forEach(sub -> sub.onCardBottled(card));
     }
 
+    public static void dispatchEnterEvent(AbstractEvent event) {
+        subscribers.forEach(sub -> sub.onEventEntered(event));
+    }
+
+    public static void dispatchRollQuestionMark(EventHelper.RoomResult result) {
+        subscribers.forEach(sub -> sub.onQuestionMarkResolved(result));
+    }
 }

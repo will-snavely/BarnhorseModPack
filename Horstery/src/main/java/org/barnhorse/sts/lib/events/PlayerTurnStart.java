@@ -11,11 +11,6 @@ public class PlayerTurnStart extends GameEvent {
         super(key, "The player started a new turn");
     }
 
-    public PlayerTurnStart(AbstractPlayer player) {
-        this();
-        this.player = new Player(player);
-    }
-
     public PlayerTurnStart(AbstractPlayer player, boolean verbose) {
         this();
         if (verbose) {

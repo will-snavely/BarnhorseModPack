@@ -1,4 +1,4 @@
-package org.barnhorse.sts.patches.util;
+package org.barnhorse.sts.lib.model;
 
 public enum RelicEffect {
     ApplyVulnerable,

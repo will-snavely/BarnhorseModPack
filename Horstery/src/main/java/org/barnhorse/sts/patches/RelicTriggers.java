@@ -27,14 +27,14 @@ import javassist.CtBehavior;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.util.FirstLineLocator;
-import org.barnhorse.sts.patches.util.RelicEffect;
+import org.barnhorse.sts.lib.model.RelicEffect;
 import org.barnhorse.sts.patches.util.ReturnLocator;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RelicPatches {
+public class RelicTriggers {
     @SpirePatch(
             clz = Abacus.class,
             method = "onShuffle"

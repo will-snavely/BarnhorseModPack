@@ -11,6 +11,8 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -28,9 +30,9 @@ import org.barnhorse.sts.lib.consumer.EventConsumer;
 import org.barnhorse.sts.lib.consumer.FileConsumer;
 import org.barnhorse.sts.lib.consumer.NitriteConsumer;
 import org.barnhorse.sts.lib.events.*;
+import org.barnhorse.sts.lib.model.RelicEffect;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.dispatch.PatchEventSubscriber;
-import org.barnhorse.sts.patches.util.RelicEffect;
 
 import java.io.File;
 import java.io.FileReader;
@@ -453,6 +455,21 @@ public class Horstery implements
     @Override
     public void onRelicTriggered(AbstractRelic relic, Map<RelicEffect, Integer> summary) {
         publishEvent(new RelicTriggered(relic, summary));
+    }
+
+    @Override
+    public void onCardBottled(AbstractCard card) {
+        publishEvent(new CardBottled(card));
+    }
+
+    @Override
+    public void onEventEntered(AbstractEvent event) {
+        publishEvent(new EventEntered(event));
+    }
+
+    @Override
+    public void onQuestionMarkResolved(EventHelper.RoomResult result) {
+        publishEvent(new QuestionMarkResolved(result));
     }
 
     @Override

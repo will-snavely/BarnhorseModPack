@@ -6,13 +6,16 @@ import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
-import org.barnhorse.sts.patches.util.RelicEffect;
+import org.barnhorse.sts.lib.model.RelicEffect;
 
 import java.util.List;
 import java.util.Map;
@@ -69,4 +72,10 @@ public interface PatchEventSubscriber {
     void onPurchaseRelic(StoreRelic relic);
 
     void onRelicTriggered(AbstractRelic relic, Map<RelicEffect, Integer> summary);
+
+    void onCardBottled(AbstractCard card);
+
+    void onEventEntered(AbstractEvent event);
+
+    void onQuestionMarkResolved(EventHelper.RoomResult result);
 }
