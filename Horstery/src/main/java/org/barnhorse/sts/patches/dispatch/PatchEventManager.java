@@ -13,9 +13,11 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
+import com.megacrit.cardcrawl.rewards.chests.AbstractChest;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
+import com.megacrit.cardcrawl.screens.select.BossRelicSelectScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
@@ -208,5 +210,15 @@ public class PatchEventManager {
 
     public static void dispatchGoldGained(int amount) {
         subscribers.forEach(sub -> sub.dispatchGoldGained(amount));
+    }
+
+    public static void dispatchChestOpened(
+            AbstractChest chest,
+            ArrayList<RewardItem> rewards) {
+        subscribers.forEach(sub -> sub.dispatchChestOpened(chest, rewards));
+    }
+
+    public static void dispatchBossChestOpened(BossRelicSelectScreen screen, ArrayList<AbstractRelic> relics) {
+        subscribers.forEach(sub -> sub.dispatchBossChestOpened(relics));
     }
 }

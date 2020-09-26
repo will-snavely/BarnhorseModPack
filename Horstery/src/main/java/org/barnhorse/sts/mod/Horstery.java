@@ -20,6 +20,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
+import com.megacrit.cardcrawl.rewards.chests.AbstractChest;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
@@ -537,6 +538,16 @@ public class Horstery implements
     @Override
     public void dispatchGoldGained(int amount) {
         publishEvent(new GoldGained(amount, AbstractDungeon.player.gold));
+    }
+
+    @Override
+    public void dispatchChestOpened(AbstractChest chest, ArrayList<RewardItem> rewards) {
+        publishEvent(new ChestOpened(chest, rewards));
+    }
+
+    @Override
+    public void dispatchBossChestOpened(ArrayList<AbstractRelic> relics) {
+        publishEvent(new BossChestOpened(relics));
     }
 
     @Override
