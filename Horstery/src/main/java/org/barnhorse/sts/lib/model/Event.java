@@ -1,7 +1,6 @@
 package org.barnhorse.sts.lib.model;
 
 import com.megacrit.cardcrawl.events.AbstractEvent;
-import com.megacrit.cardcrawl.events.exordium.Cleric;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 
 public class Event {
