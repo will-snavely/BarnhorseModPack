@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
@@ -168,5 +169,16 @@ public class PatchEventManager {
 
     public static void dispatchEnemyTurnStart() {
         subscribers.forEach(sub -> sub.onEnemyTurnStart());
+    }
+
+    public static void dispatchRoomPhaseChange(
+            AbstractRoom room,
+            AbstractRoom.RoomPhase lastPhase,
+            AbstractRoom.RoomPhase curPhase) {
+        subscribers.forEach(sub -> sub.onRoomPhaseChange(room, lastPhase, curPhase));
+    }
+
+    public static void dispatchRewardsRecieved(ArrayList<RewardItem> rewards) {
+        subscribers.forEach(sub -> sub.dispatchRewardsReceived(rewards));
     }
 }

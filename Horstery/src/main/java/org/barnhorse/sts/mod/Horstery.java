@@ -17,6 +17,7 @@ import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 import com.megacrit.cardcrawl.saveAndContinue.SaveFile;
@@ -43,6 +44,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -488,6 +490,18 @@ public class Horstery implements
     @Override
     public void onEnemyTurnStart() {
         publishEvent(new EnemyTurnStart(AbstractDungeon.getCurrRoom()));
+    }
+
+    @Override
+    public void onRoomPhaseChange(AbstractRoom room, AbstractRoom.RoomPhase lastPhase, AbstractRoom.RoomPhase curPhase) {
+        if (lastPhase == AbstractRoom.RoomPhase.COMBAT && curPhase == AbstractRoom.RoomPhase.COMPLETE) {
+            publishEvent(new CombatComplete(room));
+        }
+    }
+
+    @Override
+    public void dispatchRewardsReceived(ArrayList<RewardItem> rewards) {
+        publishEvent(new RewardsReceived(rewards));
     }
 
     @Override

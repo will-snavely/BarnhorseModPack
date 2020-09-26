@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
@@ -19,6 +20,7 @@ import com.megacrit.cardcrawl.shop.StoreRelic;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.lib.model.RelicEffect;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -88,4 +90,8 @@ public interface PatchEventSubscriber {
     void onKeyObtained(ObtainKeyEffect.KeyColor color);
 
     void onEnemyTurnStart();
+
+    void onRoomPhaseChange(AbstractRoom room, AbstractRoom.RoomPhase lastPhase, AbstractRoom.RoomPhase curPhase);
+
+    void dispatchRewardsReceived(ArrayList<RewardItem> rewards);
 }
