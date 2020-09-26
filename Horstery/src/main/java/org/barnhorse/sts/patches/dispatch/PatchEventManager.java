@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
+import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.lib.model.RelicEffect;
 
 import java.util.ArrayList;
@@ -159,5 +160,9 @@ public class PatchEventManager {
 
     public static void dispatchPotionUsed(AbstractPotion potion, AbstractCreature target) {
         subscribers.forEach(sub -> sub.onPotionUsed(potion, target));
+    }
+
+    public static void dispatchKeyObtained(ObtainKeyEffect.KeyColor color) {
+        subscribers.forEach(sub -> sub.onKeyObtained(color));
     }
 }

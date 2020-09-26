@@ -24,6 +24,7 @@ import com.megacrit.cardcrawl.screens.GameOverStat;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import com.megacrit.cardcrawl.shop.StorePotion;
 import com.megacrit.cardcrawl.shop.StoreRelic;
+import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.EventPublisher;
@@ -481,6 +482,11 @@ public class Horstery implements
     @Override
     public void onPotionUsed(AbstractPotion potion, AbstractCreature target) {
         publishEvent(new PotionUsed(potion, target));
+    }
+
+    @Override
+    public void onKeyObtained(ObtainKeyEffect.KeyColor color) {
+        publishEvent(new KeyObtained(color));
     }
 
     @Override
