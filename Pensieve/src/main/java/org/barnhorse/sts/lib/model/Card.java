@@ -55,7 +55,6 @@ public class Card {
     public boolean returnToHand;
     public boolean selfRetain;
     public boolean shuffleBackIntoDrawPile;
-    public List<AbstractCard.CardTags> tags;
     public AbstractCard.CardTarget target;
     public int timesUpgraded;
     public AbstractCard.CardType type;
@@ -122,7 +121,6 @@ public class Card {
         this.returnToHand = card.returnToHand;
         this.selfRetain = card.selfRetain;
         this.shuffleBackIntoDrawPile = card.shuffleBackIntoDrawPile;
-        this.tags = card.tags;
         this.target = card.target;
         this.timesUpgraded = card.timesUpgraded;
         this.type = card.type;

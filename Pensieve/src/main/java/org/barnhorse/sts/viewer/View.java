@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,8 @@ public class View {
     private JLabel status;
     private GameEventTable eventTable;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private JButton export;
+    private JButton fileOpen;
 
     public View() {
         JFrame frame = new JFrame("Event Viewer");
@@ -32,10 +36,10 @@ public class View {
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(3, 1));
-        JButton fileOpen = new JButton("Select Run");
-        fileOpen.addActionListener(new FileOpenListener());
+        this.fileOpen = new JButton("Select Run");
+        this.fileOpen.addActionListener(new FileOpenListener());
         JLabel currentLoadedRun = new JLabel("Selected Run:");
-        topPanel.add(fileOpen);
+        topPanel.add(this.fileOpen);
 
         JPanel secondRow = new JPanel();
         this.fileNameLabel = new JLabel("None");
@@ -58,16 +62,37 @@ public class View {
         JScrollPane scrollPane = new JScrollPane(eventList);
         eventList.addMouseListener(new TableClickListener());
 
+        this.export = new JButton("Export as JSON Lines");
+        this.export.addActionListener(new ExportListener());
+        this.export.setEnabled(false);
+
+
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(scrollPane, BorderLayout.CENTER);
+        frame.add(this.export, BorderLayout.SOUTH);
         frame.setVisible(true);
+    }
+
+    private void disableInputs() {
+        this.export.setEnabled(false);
+        this.fileOpen.setEnabled(false);
     }
 
     private void onFileSelected(File file) {
         this.fileNameLabel.setText(file.getAbsolutePath());
         this.status.setText("Loading Events...");
+        this.export.setEnabled(false);
         EventLoader loader = new EventLoader(file);
+        disableInputs();
         loader.execute();
+    }
+
+    private void onExportSelected(File file) {
+        this.fileNameLabel.setText(file.getAbsolutePath());
+        this.status.setText("Exporting Events...");
+        EventExporter exporter = new EventExporter(file);
+        disableInputs();
+        exporter.execute();
     }
 
     private void onRowDoubleClick(int row) {
@@ -109,6 +134,21 @@ public class View {
         }
     }
 
+    private class ExportListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String userDirLocation = System.getProperty("user.dir");
+            File userDir = new File(userDirLocation);
+            JFileChooser chooser = new JFileChooser(userDir);
+            chooser.setDialogTitle("Specify the export destination");
+            int userSelection = chooser.showSaveDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                View.this.onExportSelected(chooser.getSelectedFile());
+            }
+        }
+    }
+
     private class FileOpenListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -122,26 +162,60 @@ public class View {
         }
     }
 
+    private List<GameEvent> readEvents(File file) {
+        Nitrite db = null;
+        ObjectRepository<GameEvent> eventStore = null;
+        try {
+            db = Nitrite.builder().filePath(file).openOrCreate();
+            eventStore = db.getRepository(GameEvent.class);
+            return eventStore.find().toList();
+        } finally {
+            if (eventStore != null)
+                eventStore.close();
+            if (db != null)
+                db.close();
+        }
+    }
+
+    private class EventExporter extends SwingWorker<File, File> {
+        private File target;
+
+        public EventExporter(File file) {
+            this.target = file;
+        }
+
+        protected File doInBackground() throws Exception {
+            PrintWriter writer = new PrintWriter(new FileWriter(this.target));
+            try {
+                for (GameEvent event : eventTable.events) {
+                    String data = objectMapper
+                            .writeValueAsString(event);
+                    writer.println(data);
+                }
+            } finally {
+                writer.close();
+            }
+            return this.target;
+        }
+
+        protected void done() {
+            try {
+                File result = this.get();
+                View.this.status.setText("Exported Events to: " + result.getAbsolutePath());
+            } catch (Exception e) {
+                View.this.status.setText("Failed to export events:\n " + e.getMessage());
+            } finally {
+                View.this.export.setEnabled(true);
+                View.this.fileOpen.setEnabled(true);
+            }
+        }
+    }
+
     private class EventLoader extends SwingWorker<List<GameEvent>, List<GameEvent>> {
         private File target;
 
         public EventLoader(File file) {
             this.target = file;
-        }
-
-        private List<GameEvent> readEvents(File file) {
-            Nitrite db = null;
-            ObjectRepository<GameEvent> eventStore = null;
-            try {
-                db = Nitrite.builder().filePath(file).openOrCreate();
-                eventStore = db.getRepository(GameEvent.class);
-                return eventStore.find().toList();
-            } finally {
-                if (eventStore != null)
-                    eventStore.close();
-                if (db != null)
-                    db.close();
-            }
         }
 
         protected List<GameEvent> doInBackground() throws Exception {
@@ -155,8 +229,11 @@ public class View {
                 View.this.status.setText("Loaded Events! Double click on an event to see details.");
                 View.this.eventTable.clear();
                 View.this.eventTable.addEvents(result);
+                View.this.export.setEnabled(true);
             } catch (Exception e) {
                 View.this.status.setText("Failed to load events:\n " + e.getMessage());
+            } finally {
+                View.this.fileOpen.setEnabled(true);
             }
         }
     }

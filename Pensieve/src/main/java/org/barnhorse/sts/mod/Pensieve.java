@@ -64,6 +64,8 @@ public class Pensieve implements
         basemod.interfaces.StartGameSubscriber,
         PatchEventSubscriber {
 
+    public final static int SCHEMA_VERSION = 0;
+
     enum ModState {
         IN_RUN,
         OUT_OF_RUN,
