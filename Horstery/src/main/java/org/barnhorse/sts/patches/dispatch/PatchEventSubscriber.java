@@ -94,4 +94,6 @@ public interface PatchEventSubscriber {
     void onRoomPhaseChange(AbstractRoom room, AbstractRoom.RoomPhase lastPhase, AbstractRoom.RoomPhase curPhase);
 
     void dispatchRewardsReceived(ArrayList<RewardItem> rewards);
+
+    void dispatchMapGenerated();
 }

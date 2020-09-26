@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
+import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -502,6 +503,11 @@ public class Horstery implements
     @Override
     public void dispatchRewardsReceived(ArrayList<RewardItem> rewards) {
         publishEvent(new RewardsReceived(rewards));
+    }
+
+    @Override
+    public void dispatchMapGenerated() {
+        publishEvent(new MapGenerated(AbstractDungeon.map, AbstractDungeon.bossKey));
     }
 
     @Override

@@ -181,4 +181,8 @@ public class PatchEventManager {
     public static void dispatchRewardsRecieved(ArrayList<RewardItem> rewards) {
         subscribers.forEach(sub -> sub.dispatchRewardsReceived(rewards));
     }
+
+    public static void dispatchMapGenerated() {
+        subscribers.forEach(sub -> sub.dispatchMapGenerated());
+    }
 }
