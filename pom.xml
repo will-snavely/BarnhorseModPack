@@ -19,7 +19,7 @@
     </properties>
 
     <modules>
-        <module>Horstery</module>
+        <module>Pensieve</module>
         <module>PatchHelper</module>
     </modules>
 

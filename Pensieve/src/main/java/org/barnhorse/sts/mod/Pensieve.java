@@ -56,7 +56,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 @SpireInitializer
-public class Horstery implements
+public class Pensieve implements
         basemod.interfaces.OnStartBattleSubscriber,
         basemod.interfaces.RelicGetSubscriber,
         basemod.interfaces.PostDrawSubscriber,
@@ -70,7 +70,7 @@ public class Horstery implements
         ERROR
     }
 
-    public static final Logger logger = LogManager.getLogger(Horstery.class.getName());
+    public static final Logger logger = LogManager.getLogger(Pensieve.class.getName());
 
     private static final Path modWorkingPath = Paths
             .get("mods", "etc", "barnhorse", "horstery")
@@ -88,7 +88,7 @@ public class Horstery implements
     private Configuration config;
     private ModState state;
 
-    public Horstery(Configuration config) {
+    public Pensieve(Configuration config) {
         this.config = config;
         this.state = ModState.OUT_OF_RUN;
         this.publisher = null;
@@ -167,7 +167,7 @@ public class Horstery implements
             return;
         }
 
-        Horstery mod = new Horstery(config);
+        Pensieve mod = new Pensieve(config);
         BaseMod.subscribe(mod);
         PatchEventManager.subscribe(mod);
     }

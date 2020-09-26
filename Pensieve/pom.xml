@@ -9,7 +9,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>Horstery</artifactId>
+    <artifactId>Pensieve</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,7 +21,7 @@
     </dependencies>
 
     <build>
-        <finalName>Horstery</finalName>
+        <finalName>Pensieve</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

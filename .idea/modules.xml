@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Horstery/Horstery.iml" filepath="$PROJECT_DIR$/Horstery/Horstery.iml" />
       <module fileurl="file://$PROJECT_DIR$/ModPack.iml" filepath="$PROJECT_DIR$/ModPack.iml" />
       <module fileurl="file://$PROJECT_DIR$/PatchHelper/PatchHelper.iml" filepath="$PROJECT_DIR$/PatchHelper/PatchHelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Pensieve/Pensieve.iml" filepath="$PROJECT_DIR$/Pensieve/Pensieve.iml" />
     </modules>
   </component>
 </project>

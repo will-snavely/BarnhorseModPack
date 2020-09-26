@@ -7,14 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="PatchHelper" />
-        <module name="Horstery" />
+        <module name="Pensieve" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Horstery" target="1.8" />
       <module name="ModPack" target="1.5" />
       <module name="PatchGen" target="1.8" />
       <module name="PatchHelper" target="1.8" />
+      <module name="Pensieve" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
