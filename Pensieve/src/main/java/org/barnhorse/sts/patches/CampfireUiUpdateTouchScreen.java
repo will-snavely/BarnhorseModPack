@@ -2,7 +2,6 @@ package org.barnhorse.sts.patches;
 
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.rooms.CampfireUI;
-import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import javassist.CtBehavior;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;

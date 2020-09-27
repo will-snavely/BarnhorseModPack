@@ -24,10 +24,10 @@ import com.megacrit.cardcrawl.rooms.ShopRoom;
 import com.megacrit.cardcrawl.ui.campfire.SmithOption;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 import javassist.CtBehavior;
+import org.barnhorse.sts.lib.model.RelicEffect;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 import org.barnhorse.sts.patches.util.FirstLineLocator;
-import org.barnhorse.sts.lib.model.RelicEffect;
 import org.barnhorse.sts.patches.util.ReturnLocator;
 
 import java.util.Collections;
