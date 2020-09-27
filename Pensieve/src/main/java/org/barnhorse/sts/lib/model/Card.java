@@ -4,8 +4,6 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import org.barnhorse.sts.lib.util.ReflectionHelper;
 
-import java.util.List;
-
 public class Card {
     public int baseBlock;
     public int baseDamage;
