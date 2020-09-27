@@ -2,7 +2,6 @@ package org.barnhorse.sts.lib.events;
 
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.screens.GameOverStat;
-import org.barnhorse.sts.lib.model.Card;
 import org.barnhorse.sts.lib.model.Player;
 import org.barnhorse.sts.lib.model.Stat;
 
