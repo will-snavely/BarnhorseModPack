@@ -14,7 +14,6 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.EventHelper;
-import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
@@ -34,6 +33,7 @@ import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.EventPublisher;
+import org.barnhorse.sts.lib.consumer.ConsoleConsumer;
 import org.barnhorse.sts.lib.consumer.EventConsumer;
 import org.barnhorse.sts.lib.consumer.FileConsumer;
 import org.barnhorse.sts.lib.consumer.NitriteConsumer;
@@ -89,6 +89,7 @@ public class Pensieve implements
     private EventPublisher publisher;
     private Configuration config;
     private ModState state;
+    private RunId currentRunId;
 
     public Pensieve(Configuration config) {
         this.config = config;
@@ -147,17 +148,7 @@ public class Pensieve implements
         }
     }
 
-    private static EventConsumer getEventConsumer(StorageEngine storageEngine, File dest) {
-        switch (storageEngine) {
-            case FILE:
-                return new FileConsumer(dest);
-            case NITRITE:
-                return new NitriteConsumer(dest);
-            default:
-                throw new RuntimeException("Failed to initialize a consumer.");
-        }
-    }
-
+    @SuppressWarnings("unused")
     public static void initialize() {
         Configuration config;
 
@@ -174,18 +165,37 @@ public class Pensieve implements
         PatchEventManager.subscribe(mod);
     }
 
-    private Path getRunEventPath(Long seed, AbstractPlayer player) {
-        assert seed != null;
-        assert player != null;
-
-        String seedString = SeedHelper.getString(seed);
-        String playerClass = player.chosenClass.name();
-        String fileName = String.format("%s_%s.run", seedString, playerClass);
+    private Path getRunEventPath(RunId runId) {
+        assert runId != null;
+        String fileName = String.format("%s.run", runId.toString());
         return Paths.get(this.config.getEventLogDirectory(), fileName);
     }
 
-    private EventConsumer createEventConsumer(File eventFile) {
-        return getEventConsumer(this.config.getStorageEngine(), eventFile);
+    private EventConsumer createEventConsumer(RunId runId, boolean clobber)
+            throws ConsumerCreationFailed {
+        File eventFile;
+        StorageEngine engine = this.config.getStorageEngine();
+        switch (engine) {
+            case FILE:
+            case NITRITE:
+                eventFile = this.getRunEventPath(runId).toFile();
+                if (eventFile.exists() && clobber) {
+                    if (!eventFile.delete()) {
+                        throw new ConsumerCreationFailed("Failed to clobber event file.");
+                    }
+                }
+                if (engine == StorageEngine.NITRITE) {
+                    return new NitriteConsumer(eventFile);
+                } else if (engine == StorageEngine.FILE) {
+                    return new FileConsumer(eventFile);
+                } else {
+                    throw new ConsumerCreationFailed("Unexpected storage engine: " + engine);
+                }
+            case CONSOLE:
+                return new ConsoleConsumer(runId);
+            default:
+                throw new ConsumerCreationFailed("Unexpected storage engine: " + engine);
+        }
     }
 
     private void shutDownLogger() {
@@ -195,7 +205,7 @@ public class Pensieve implements
         }
     }
 
-    private void enterRun(Long seed, AbstractPlayer player, boolean clobber) {
+    private void enterRun(boolean clobber) {
         if (this.state == ModState.ERROR) {
             logger.warn("Tried to enter a run in the ERROR state, refusing to do so.");
         }
@@ -205,21 +215,22 @@ public class Pensieve implements
             return;
         }
 
+        this.currentRunId = new RunId(
+                Settings.seed,
+                AbstractDungeon.player);
+
         this.state = ModState.IN_RUN;
 
         if (this.publisher == null) {
-            File eventFile = this.getRunEventPath(seed, player).toFile();
-            if (eventFile.exists() && clobber) {
-                if (!eventFile.delete()) {
-                    logger.error("Failed to clobber event file!");
-                    this.enterErrorState();
-                }
+            try {
+                EventConsumer consumer = this.createEventConsumer(this.currentRunId, clobber);
+                this.publisher = new EventPublisher(consumer);
+                consumer.setup();
+                this.publisher.start();
+            } catch (ConsumerCreationFailed e) {
+                logger.error("Failed to start an event publisher.", e);
+                this.enterErrorState();
             }
-
-            EventConsumer consumer = this.createEventConsumer(eventFile);
-            this.publisher = new EventPublisher(consumer);
-            consumer.setup();
-            this.publisher.start();
         }
     }
 
@@ -234,10 +245,12 @@ public class Pensieve implements
         }
 
         this.state = ModState.OUT_OF_RUN;
+        this.currentRunId = null;
         this.shutDownLogger();
     }
 
     private void enterErrorState() {
+        logger.error("The mod is entering the error state. Please inform a dev.");
         this.state = ModState.ERROR;
     }
 
@@ -278,13 +291,13 @@ public class Pensieve implements
         this.publisher.publishEvent(event);
     }
 
-    public void publishOneOffEvent(GameEvent event, File file) {
+    public void publishOneOffEvent(GameEvent event, RunId runId) {
         assert event != null;
-        assert file != null;
+        assert runId != null;
 
         EventConsumer consumer = null;
         try {
-            consumer = this.createEventConsumer(file);
+            consumer = this.createEventConsumer(runId, false);
             consumer.setup();
             consumer.accept(event);
         } catch (Exception e) {
@@ -296,66 +309,86 @@ public class Pensieve implements
         }
     }
 
-    private void archiveRun(Long seed, AbstractPlayer player) throws IOException {
-        Path currentLogPath = this.getRunEventPath(seed, player);
-        if (!currentLogPath.toFile().exists()) {
-            logger.error(
-                    "Tried to archive run '{}', but it doesn't exist!",
-                    currentLogPath.toString()
-            );
+    private void archiveRun(RunId runId) throws IOException {
+        StorageEngine engine = this.config.getStorageEngine();
+        switch (engine) {
+            case FILE:
+            case NITRITE:
+                Path currentLogPath = this.getRunEventPath(runId);
+                if (!currentLogPath.toFile().exists()) {
+                    logger.error(
+                            "Tried to archive run '{}', but it doesn't exist!",
+                            currentLogPath.toString()
+                    );
+                }
+
+                String eventFileName = currentLogPath.getFileName().toString();
+                String archiveFileName = String.format(
+                        "%s_%d_archive.run",
+                        eventFileName.replace(".run", ""),
+                        System.currentTimeMillis()
+                );
+
+                Path archiveDir = Paths.get(this.config.getArchiveDirectory());
+                archiveDir.resolve(archiveFileName);
+                Path archivePath = archiveDir.resolve(archiveFileName);
+                Files.copy(currentLogPath, archivePath, StandardCopyOption.REPLACE_EXISTING);
+            case CONSOLE:
+                break;
+            default:
+                logger.error("Unexpected storage engine: " + engine);
+                break;
         }
-
-        String eventFileName = currentLogPath.getFileName().toString();
-        String archiveFileName = String.format(
-                "%s_%d_archive.run",
-                eventFileName.replace(".run", ""),
-                System.currentTimeMillis()
-        );
-
-        Path archiveDir = Paths.get(this.config.getArchiveDirectory());
-        archiveDir.resolve(archiveFileName);
-        Path archivePath = archiveDir.resolve(archiveFileName);
-        Files.copy(currentLogPath, archivePath, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    private void deleteRun(Long seed, AbstractPlayer player) {
-        File runFile = this.getRunEventPath(seed, player).toFile();
-        if (!runFile.delete()) {
-            throw new RuntimeException(
-                    "Failed to delete run file at: " + runFile.getAbsolutePath()
-            );
+    private void deleteRun(RunId id) {
+        assert id != null;
+        StorageEngine engine = this.config.getStorageEngine();
+        switch (engine) {
+            case FILE:
+            case NITRITE:
+                File runFile = this.getRunEventPath(id).toFile();
+                if (!runFile.delete()) {
+                    throw new RuntimeException(
+                            "Failed to delete run file at: " + runFile.getAbsolutePath()
+                    );
+                }
+            case CONSOLE:
+                break;
+            default:
+                logger.error("Unexpected storage engine: " + engine);
+                break;
         }
     }
 
     @Override
     public void receivePostDungeonInitialize() {
-        this.enterRun(Settings.seed, AbstractDungeon.player, true);
+        this.enterRun(true);
         publishEvent(RunStart.fromGameSettings());
     }
 
     @Override
     public void receiveStartGame() {
-        this.enterRun(Settings.seed, AbstractDungeon.player, false);
+        this.enterRun(false);
     }
 
     @Override
     public void onAbandonRun(AbstractPlayer player) {
-        Long seed;
+        RunId runId;
 
         if (state == ModState.OUT_OF_RUN) {
             SaveFile saveFile = SaveAndContinue.loadSaveFile(player.chosenClass);
-            seed = saveFile.seed;
-            File runFile = getRunEventPath(saveFile.seed, player).toFile();
-            publishOneOffEvent(new RunAbandoned(), runFile);
+            runId = new RunId(saveFile.seed, player);
+            publishOneOffEvent(new RunAbandoned(), runId);
         } else {
-            seed = Settings.seed;
+            runId = this.currentRunId;
             publishEvent(new RunAbandoned());
             this.exitRun();
         }
 
         try {
-            this.archiveRun(seed, player);
-            this.deleteRun(seed, player);
+            this.archiveRun(runId);
+            this.deleteRun(runId);
         } catch (Exception e) {
             logger.error("Failed to archive current run!", e);
         }
@@ -412,11 +445,12 @@ public class Pensieve implements
     @Override
     public void onPlayerDied(AbstractPlayer player, List<GameOverStat> stats) {
         if (this.state == ModState.IN_RUN) {
+            RunId runId = this.currentRunId;
             publishEvent(new PlayerDied(player, stats));
             this.exitRun();
             try {
-                this.archiveRun(Settings.seed, player);
-                this.deleteRun(Settings.seed, player);
+                this.archiveRun(runId);
+                this.deleteRun(runId);
             } catch (Exception e) {
                 logger.error("Failed to archive current run!", e);
             }
@@ -428,8 +462,8 @@ public class Pensieve implements
         publishEvent(new PlayerVictory(player, stats));
         this.exitRun();
         try {
-            this.archiveRun(Settings.seed, player);
-            this.deleteRun(Settings.seed, player);
+            this.archiveRun(this.currentRunId);
+            this.deleteRun(this.currentRunId);
         } catch (Exception e) {
             logger.error("Failed to archive current run!", e);
         }

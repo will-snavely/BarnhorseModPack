@@ -3,9 +3,6 @@ package org.barnhorse.sts.lib.events;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RunStart extends GameEvent {
     public final static String key = "run_start";
 

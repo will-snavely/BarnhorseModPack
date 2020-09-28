@@ -66,7 +66,6 @@ public class View {
         this.export.addActionListener(new ExportListener());
         this.export.setEnabled(false);
 
-
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.add(this.export, BorderLayout.SOUTH);
@@ -94,7 +93,7 @@ public class View {
         disableInputs();
         exporter.execute();
     }
-
+    
     private void onRowDoubleClick(int row) {
         String message;
         GameEvent event = this.eventTable.getEventOnRow(row);

@@ -4,7 +4,6 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInsertPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.megacrit.cardcrawl.vfx.ObtainKeyEffect;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
-import org.barnhorse.sts.patches.util.FirstLineLocator;
 import org.barnhorse.sts.patches.util.ReturnLocator;
 
 @SpirePatch(

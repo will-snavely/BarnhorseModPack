@@ -3,7 +3,6 @@ package org.barnhorse.sts.patches;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.screens.DeathScreen;
 import javassist.CtBehavior;
 import org.barnhorse.sts.patches.dispatch.PatchEventManager;
 

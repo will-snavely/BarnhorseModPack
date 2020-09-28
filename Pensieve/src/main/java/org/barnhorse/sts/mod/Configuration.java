@@ -2,7 +2,8 @@ package org.barnhorse.sts.mod;
 
 enum StorageEngine {
     FILE,
-    NITRITE
+    NITRITE,
+    CONSOLE
 }
 
 public class Configuration {

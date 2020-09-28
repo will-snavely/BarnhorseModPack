@@ -5,12 +5,13 @@
     <parent>
         <artifactId>ModPack</artifactId>
         <groupId>org.barnhorse.sts</groupId>
-        <version>1.0</version>
+        <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>Pensieve</artifactId>
     <packaging>jar</packaging>
+    <version>0.0.2</version>
 
     <dependencies>
         <dependency>
@@ -21,7 +22,6 @@
     </dependencies>
 
     <build>
-        <finalName>Pensieve</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -53,10 +53,14 @@
                                 </excludes>
                             </artifactSet>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>org.barnhorse.sts.viewer.EventViewer</Main-Class>
-                                        <Class-Path>../desktop-1.0.jar</Class-Path>
+                                        <Main-Class>
+                                            org.barnhorse.sts.viewer.EventViewer
+                                        </Main-Class>
+                                        <Class-Path>../desktop-1.0.jar
+                                        </Class-Path>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>

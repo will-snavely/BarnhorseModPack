@@ -12,7 +12,6 @@ public class EnterRestRoom extends GameEvent {
     public final static String key = "enter_rest_room";
     public List<CampfireOption> options;
 
-
     public EnterRestRoom() {
         super(key, "Entered a rest room");
     }

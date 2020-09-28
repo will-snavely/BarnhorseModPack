@@ -7,7 +7,7 @@
     <groupId>org.barnhorse.sts</groupId>
     <artifactId>ModPack</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.0.0</version>
 
     <properties>
         <SlayTheSpire.version>06-22-2020</SlayTheSpire.version>
