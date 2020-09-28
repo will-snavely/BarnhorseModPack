@@ -2,6 +2,8 @@ package org.barnhorse.sts.lib.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.barnhorse.sts.lib.events.GameEvent;
 
 import java.io.File;
@@ -10,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class FileConsumer extends EventConsumer {
+    public static final Logger logger = LogManager.getLogger(FileConsumer.class.getName());
+
     private PrintWriter printWriter;
     private File file;
     private ObjectMapper objectMapper;
@@ -41,7 +45,7 @@ public class FileConsumer extends EventConsumer {
         try {
             this.printWriter.println(objectMapper.writeValueAsString(gameEvent));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Failed to serialize game event.", e);
         }
     }
 }
