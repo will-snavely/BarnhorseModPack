@@ -16,6 +16,6 @@ public class RunId {
     public String toString() {
         String seedString = SeedHelper.getString(this.seed);
         String playerClass = this.playerClass.name();
-        return String.format("%s_%s.run", seedString, playerClass);
+        return String.format("%s_%s", seedString, playerClass);
     }
 }
