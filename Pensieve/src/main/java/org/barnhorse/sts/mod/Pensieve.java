@@ -396,7 +396,7 @@ public class Pensieve implements
 
     @Override
     public void onSaveAndQuit() {
-        publishEvent(new SaveAndQuit());    
+        publishEvent(new SaveAndQuit());
         this.exitRun();
     }
 
